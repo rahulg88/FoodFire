@@ -1,25 +1,42 @@
-import logo from './logo.svg';
-import './App.css';
-
+import React from "react";
+import ReactDOM from "react-dom/client";
+import { createBrowserRouter, RouterProvider, Outlet } from "react-router-dom";
+import Header from "./Component/Header";
+import Footer from "./Component/Footer";
+import About from "./Component/About";
+import Contact from "./Component/Contact";
+import Error from "./Component/Error";
+import "./App.css";
+import Body from "./Component/Body";
+import RestaurantMenu from "./Component/RestaurantMenu";
+import Atm from "./Component/Atm";
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+    <div>
+      <Header />
+      <Outlet />
+      <Footer />
+      {/* <Atm /> */}
     </div>
   );
 }
 
-export default App;
+const appRouter = createBrowserRouter([
+  {
+    path: "/",
+    element: <App />,
+    errorElement: <Error />,
+    children: [
+      { path: "/", element: <Body /> },
+      { path: "about", element: <About /> },
+      { path: "contact", element: <Contact /> },
+      {
+        path: "/restaurant/:resId",
+        element: <RestaurantMenu />,
+      },
+    ],
+  },
+]);
+
+const root = ReactDOM.createRoot(document.getElementById("root"));
+root.render(<RouterProvider router={appRouter} />);
